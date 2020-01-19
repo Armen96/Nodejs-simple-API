@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Messanger</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="jumbotron text-center">
+    <h1>Node.js + Socket.io + Redis Chat | ScaleGrid</h1>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-sm-8">
+                <div class="join-chat">
+                    <div class="col-md-5">
+                        <input class="form-control" type="text" id="username" name="username" placeholder="User Name..."/>
+                    </div>
+
+                    <div class="col-md-3">
+                        <input class="btn btn-info" type="button" id="join-chat" value="Join Chat" />
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="chat-info"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br><br>
+
+        <div class="col-md-12" style="margin-top: 25px">
+            <div class="col-sm-12">
+                <div class="chat">
+                    <div class="col-md-8">
+                        <textarea class="form-control" name="message" id="message" cols="90" rows="5" placeholder="Enter your message..."></textarea><br /><br />
+                        <input class="btn btn-success" type="button" id="send-message" data-username="" value="Send Message">&nbsp;
+                        <input class="btn btn-warning" type="button" id="leave-chat" data-username="" value="Leave Chat">
+                        <input class="btn btn-danger" type="button" id="remove-chat-messages" data-username="" value="Remove Chat">
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="messages" style="height: 500px; overflow-y: auto">
+                            <ul class='list-group messages-list'>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.6.0/socket.io.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+
+</body>
+</html>
+
+
+
