@@ -12,26 +12,8 @@ module.exports.getAll = async (req, res) =>  {
 module.exports.search = async (req, res) =>  {
     try {
         const name = req.query.name;
-        const queryOptions = {
-            $and: [{
-                name: {
-                    '$regex': name,
-                    '$options': 'i'
-                }
-            }]
-        };
-        console.time();
         const searchTextRegex = new RegExp("^" + name + "");
         const users = await Users.find({name: searchTextRegex});
-        console.timeEnd();
-        /**
-         * Search time by one latter
-         default: 81.103ms // a
-         default: 50.066ms // b
-         default: 54.487ms // c
-         default: 51.71ms  // d
-         */
-
         res.send(users);
     }catch(e) {
         console.log(e);
