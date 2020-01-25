@@ -156,6 +156,6 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
-env.js
+#env.js
 
 dist
