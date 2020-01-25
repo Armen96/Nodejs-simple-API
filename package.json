@@ -23,7 +23,8 @@
     "start": "npm run build && nodemon dist/index.js"
   },
   "engines": {
-    "node": "4.1.1"
+    "node": "12.13.0",
+    "npm": "6.x"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
