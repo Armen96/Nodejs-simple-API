@@ -1,4 +1,4 @@
-import {UsersSchema} from "../../database/models/Users";
+import {UsersSchema} from "../database/models/Users";
 
 const JwtStategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
@@ -12,16 +12,16 @@ const options = {
 };
 
 module.exports = function (passport) {
-    passport.use(new JwtStategy(options, async (payload,done) => {
+    passport.use(new JwtStategy(options, async (payload, done) => {
         try {
             const user = await Users.findById(payload.userId).select('email id');
 
-            if(user){
-                done(null,user);
-            }else{
-                done(null,false);
+            if (user){
+                done(null, user);
+            } else {
+                done(null, false);
             }
-        }catch (err){
+        } catch (err){
             console.log("Error Middleware")
         }
     }))

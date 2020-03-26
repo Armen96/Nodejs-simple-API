@@ -12,7 +12,7 @@ export const compareHashPassword = (originalPassword, password) => {
 };
 
 export const generateJWToken = (candidate) => {
-    return  jwt.sign({
+    return jwt.sign({
         email: candidate.email,
         userId: candidate._id
     }, KEYS.JWT, {expiresIn: 36000});

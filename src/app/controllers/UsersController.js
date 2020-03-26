@@ -1,36 +1,36 @@
-const Users = require('../../database/models/Users');
+const Users = require('../database/models/Users');
 import errorHandler from '../../utils/errorHandler';
 import { generateJWToken, compareHashPassword, generateHashPassword} from '../services/UsersService';
 
 
-export const index = async (req, res) =>  {
+export const index = async (req, res) => {
     try {
         const users = await Users.find({}).limit(15);
         res.send(users);
-    }catch(e) {
+    } catch (e) {
         errorHandler(res, e);
     }
 };
 
-export const login = async (req, res) =>  {
+export const login = async (req, res) => {
     const candidate = await Users.findOne({email: req.body.email });
 
-    if(candidate){
-        const passwordResult = compareHashPassword(req.body.password,candidate.password);
-        if(passwordResult){
+    if (candidate) {
+        const passwordResult = compareHashPassword(req.body.password, candidate.password);
+        if (passwordResult){
             const token = generateJWToken(candidate);
 
             res.status(200).json({
                 token: `Bearer ${token}`,
                 user: candidate
             });
-        }else{
+        } else {
             errorHandler(res, {
                 message: "Wrong password",
                 status: 401
             });
         }
-    }else{
+    } else {
         errorHandler(res, {
             message: "Email doesn't exist",
             status: 404
@@ -38,15 +38,15 @@ export const login = async (req, res) =>  {
     }
 };
 
-export const register = async (req, res) =>  {
+export const register = async (req, res) => {
     const candidate = await Users.findOne({email: req.body.email });
 
-    if(candidate){
+    if (candidate) {
         errorHandler(res, {
             message: "User already exists",
             status: 409
         });
-    }else{
+    } else {
         const user = new Users({
             email: req.body.email,
             name: req.body.name,
@@ -60,8 +60,8 @@ export const register = async (req, res) =>  {
                 user: user,
                 token: token
             });
-        }catch(e){
-            errorHandler(res,e);
+        } catch (e){
+            errorHandler(res, e);
         }
     }
 };

@@ -4,31 +4,24 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const app = express();
 const http = require('http').Server(app);
-const middlewarePassport = require('./app/middlewares/passport');
+const middlewarePassport = require('./src/app/middlewares/passport');
+import router from './src/routes';
 
-const usersRoutes = require('./routes/UsersRoutes');
-const recordsRoutes = require('./routes/RecordsRoutes');
-const port = process.env.PORT || 4205;
+
+const PORT = process.env.PORT || 4205;
 
 // MongoDB
-import { databaseConnection } from './database/index';
-databaseConnection().then(() => {
-    app.use(passport.initialize());
-    middlewarePassport(passport);
-    console.log('DB Connected ... ');
-});
-
+import { connect } from './src/app/database';
+connect();
 
 app.use(express.static('public'));
-
+app.use(passport.initialize());
+middlewarePassport(passport);
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use('/api/users', usersRoutes);
-app.use('/api/records', recordsRoutes);
+app.use('/api', router);
 
-http.listen(port, () => {
-    console.log('Server started...');
-});
+http.listen(PORT);
 

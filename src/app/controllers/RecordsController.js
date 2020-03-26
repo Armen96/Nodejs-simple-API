@@ -1,6 +1,6 @@
 import errorHandler from "../../utils/errorHandler";
 
-const Records = require('../../database/models/Records');
+const Records = require('../database/models/Records');
 const jwt = require('jsonwebtoken');
 const KEYS = require('../../env');
 
