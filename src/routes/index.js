@@ -9,6 +9,7 @@ const passport = require('passport');
  */
 router.post('/users/login', usersController.login);
 router.post('/users/register', usersController.register);
+router.post('/users/search', passport.authenticate('jwt', { session: false }), usersController.search);
 router.get('/users', usersController.index);
 
 /**

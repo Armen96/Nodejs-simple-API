@@ -17,4 +17,5 @@ export const UsersSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('users', UsersSchema);
+UsersSchema.index({'$**': 'text'});
+export default mongoose.model('users', UsersSchema);

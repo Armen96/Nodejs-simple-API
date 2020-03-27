@@ -1,4 +1,4 @@
-const Users = require('../database/models/Users');
+import Users from '../database/models/Users';
 import errorHandler from '../../utils/errorHandler';
 import { generateJWToken, compareHashPassword, generateHashPassword} from '../services/UsersService';
 
@@ -33,7 +33,7 @@ export const login = async (req, res) => {
     } else {
         errorHandler(res, {
             message: "Email doesn't exist",
-            status: 404
+            status: 500
         });
     }
 };
@@ -64,4 +64,21 @@ export const register = async (req, res) => {
             errorHandler(res, e);
         }
     }
+};
+
+export const search = async (req, res) => {
+    const searchValue = req.body.name;
+    let users = [];
+
+    if (searchValue) {
+        users = await Users.find({name: {$regex: ".*" + searchValue + ".*"}});
+
+        if (!users.length) {
+            users = await Users.find({$text: {$search: searchValue}})
+        }
+    }
+
+    res.status(200).json({
+        users: users
+    });
 };
