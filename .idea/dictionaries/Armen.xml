@@ -2,6 +2,7 @@
   <dictionary name="Armen">
     <words>
       <w>creds</w>
+      <w>sqlite</w>
     </words>
   </dictionary>
 </component>

@@ -11,7 +11,7 @@ const socketIO = require('socket.io');
 const PORT = process.env.PORT || 4205;
 
 // MongoDB
-import { connect } from './src/app/database';
+import { connect, messengerSchema } from './src/app/database';
 connect();
 
 app.use(express.static('public'));
@@ -23,8 +23,9 @@ app.use(cors());
 
 const io = socketIO(http);
 io.on('connection', (socket) => {
-    socket.on('messages', () => {
-        io.emit('messages', [{created_at: "26/04/2020", message: "Chis", user_id: "aasdasdasd"}]);
+    socket.on('messages', async (roomId) => {
+        const response = await messengerSchema.getByFieldName('short_id', roomId);
+        io.emit('messages', response);
     });
 
     socket.on('joinToRoom', (roomId) => {
@@ -35,8 +36,9 @@ io.on('connection', (socket) => {
         socket.leave(roomId);
     });
 
-    socket.on('new-message', (roomId, msg) => {
-        io.in(roomId).emit('new-message', msg);
+    socket.on('new-message', (roomId, data) => {
+        messengerSchema._create(data.message, data.to_id, data.from_id, data.short_id, data.status, data.created_at);
+        io.in(roomId).emit('new-message', data);
     });
 });
 
