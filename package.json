@@ -17,6 +17,7 @@
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "redis": "^2.8.0",
+    "shortid": "^2.2.15",
     "socket.io": "^1.7.4"
   },
   "main": "index.js",

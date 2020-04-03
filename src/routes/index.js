@@ -1,6 +1,7 @@
 const express = require('express');
 const usersController = require('../app/controllers/UsersController');
 const recordsController = require('../app/controllers/RecordsController');
+const roomsController = require('../app/controllers/RoomsController');
 const router = express.Router();
 const passport = require('passport');
 
@@ -10,6 +11,7 @@ const passport = require('passport');
 router.post('/users/login', usersController.login);
 router.post('/users/register', usersController.register);
 router.post('/users/search', passport.authenticate('jwt', { session: false }), usersController.search);
+router.post('/users/room', passport.authenticate('jwt', { session: false }), roomsController.getRoom);
 router.get('/users', usersController.index);
 
 /**

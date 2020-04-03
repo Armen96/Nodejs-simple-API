@@ -21,18 +21,24 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cors());
 
-
 const io = socketIO(http);
 io.on('connection', (socket) => {
-    socket.on('new-message', (message) => {
-        io.emit('new-message', message);
-    });
-
     socket.on('messages', () => {
         io.emit('messages', [{created_at: "26/04/2020", message: "Chis", user_id: "aasdasdasd"}]);
     });
-});
 
+    socket.on('joinToRoom', (roomId) => {
+        socket.join(roomId);
+    });
+
+    socket.on('leaveTheRoom', (roomId) => {
+        socket.leave(roomId);
+    });
+
+    socket.on('new-message', (roomId, msg) => {
+        io.in(roomId).emit('new-message', msg);
+    });
+});
 
 app.use('/api', router);
 
