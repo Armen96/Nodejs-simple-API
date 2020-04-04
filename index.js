@@ -7,13 +7,14 @@ const http = require('http').Server(app);
 const middlewarePassport = require('./src/app/middlewares/passport');
 import router from './src/routes';
 const socketIO = require('socket.io');
-
+const fileUpload = require('express-fileupload');
 const PORT = process.env.PORT || 4205;
 
 // MongoDB
 import { connect, messengerSchema } from './src/app/database';
 connect();
 
+app.use(fileUpload());
 app.use(express.static('public'));
 app.use(passport.initialize());
 middlewarePassport(passport);

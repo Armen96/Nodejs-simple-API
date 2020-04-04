@@ -1,6 +1,7 @@
 import Users from '../database/models/Users';
 import errorHandler from '../../utils/errorHandler';
-import { generateJWToken, compareHashPassword, generateHashPassword} from '../services/UsersService';
+import { generateJWToken, compareHashPassword, generateHashPassword, generateUniqueImageNames} from '../services/UsersService';
+import { uploadToS3 } from '../libs/aws';
 
 
 export const index = async (req, res) => {
@@ -47,18 +48,27 @@ export const register = async (req, res) => {
             status: 409
         });
     } else {
-        const user = new Users({
-            email: req.body.email,
-            name: req.body.name,
-            password: generateHashPassword(req.body.password)
-        });
-        const token = generateJWToken(user);
-
         try {
-            await user.save();
-            res.status(201).json({
-                user: user,
-                token: token
+            const imageFile = req.files;
+            const imageName = generateUniqueImageNames(imageFile.image.name);
+            imageFile.image.name = imageName;
+
+            uploadToS3(imageFile, async function (data) {
+                const user = new Users({
+                    email: req.body.email,
+                    name: req.body.name,
+                    image: 'https://aws-polly-hash-77542231.s3.us-east-2.amazonaws.com/' + imageName,
+                    password: generateHashPassword(req.body.password)
+                });
+
+                const token = generateJWToken(user);
+                await user.save();
+
+                res.status(201).json({
+                    user: user,
+                    token: token
+                });
+
             });
         } catch (e){
             errorHandler(res, e);
