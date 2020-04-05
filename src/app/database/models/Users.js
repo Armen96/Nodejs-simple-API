@@ -25,6 +25,10 @@ export const UsersSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    friends: {
+        type: Object,
+        default: []
     }
 });
 

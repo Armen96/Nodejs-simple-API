@@ -1,6 +1,10 @@
 import Users from '../database/models/Users';
 import errorHandler from '../../utils/errorHandler';
-import { generateJWToken, compareHashPassword, generateHashPassword, generateUniqueImageNames} from '../services/UsersService';
+import {
+    generateJWToken, compareHashPassword,
+    generateHashPassword, generateUniqueImageNames,
+    getUserInfoByToken
+} from '../services/UsersService';
 import { uploadToS3 } from '../libs/aws';
 
 
@@ -81,14 +85,53 @@ export const search = async (req, res) => {
     let users = [];
 
     if (searchValue) {
+        const authUserInfo = getUserInfoByToken(req.headers['app-token']);
+        const authUser = await Users.findOne({_id: authUserInfo.userId});
+
+        const friendIds = authUser['friends'].map(items => {
+            return items['_id']
+        });
+
         users = await Users.find({name: {$regex: ".*" + searchValue + ".*"}});
 
         if (!users.length) {
             users = await Users.find({$text: {$search: searchValue}})
         }
+
+        if (friendIds && friendIds.length) {
+            users = users.filter(user => {
+                return friendIds.includes(user['_id']);
+            })
+        }
     }
+
+
 
     res.status(200).json({
         users: users
     });
+};
+
+export const addFriend = async (req, res) => {
+    const authUser = getUserInfoByToken(req.headers['app-token']);
+    const friend = {
+        _id: req.body.friend['_id'],
+        name: req.body.friend['name'],
+        image: req.body.friend['image'],
+    };
+
+    if (authUser && friend) {
+        const user = await Users.findOne({_id: authUser.userId});
+        user.friends = [friend, ...user.friends];
+        user.save();
+
+        res.status(200).json({
+            data: user,
+            status: 200
+        });
+    } else {
+        res.status(200).json({
+            status: 400
+        });
+    }
 };

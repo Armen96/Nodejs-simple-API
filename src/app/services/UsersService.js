@@ -27,3 +27,14 @@ export const generateUniqueImageNames = (imageName) => {
 
     return uniqueId + '_' + randomNumber + '.' + array[1];
 };
+
+export const getUserInfoByToken = (token) => {
+    if (token) {
+        const array = token.split(' ');
+        const decoded = jwt.decode(array[1]);
+
+        return decoded;
+    }
+
+    return false;
+};
