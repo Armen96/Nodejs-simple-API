@@ -83,6 +83,7 @@ export const register = async (req, res) => {
 export const search = async (req, res) => {
     const searchValue = req.body.name;
     let users = [];
+    const notFriends = [];
 
     if (searchValue) {
         const authUserInfo = getUserInfoByToken(req.headers['app-token']);
@@ -99,16 +100,16 @@ export const search = async (req, res) => {
         }
 
         if (friendIds && friendIds.length) {
-            users = users.filter(user => {
-                return friendIds.includes(user['_id']);
-            })
+            for (let i = 0; i < users.length; i++) {
+                if(!friendIds.includes(users[i]['_id'].toString())) {
+                    notFriends.push(users[i])
+                }
+            }
         }
     }
 
-
-
     res.status(200).json({
-        users: users
+        users: notFriends
     });
 };
 
