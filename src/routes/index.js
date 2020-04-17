@@ -13,7 +13,7 @@ router.post('/users/register', usersController.register);
 router.post('/users/search', passport.authenticate('jwt', { session: false }), usersController.search);
 router.post('/users/room', passport.authenticate('jwt', { session: false }), roomsController.getRoom);
 router.post('/users/friend', passport.authenticate('jwt', { session: false }), usersController.addFriend);
-router.get('/users', usersController.index);
+router.post('/users/admin', passport.authenticate('jwt', { session: false }), usersController.index);
 
 /**
  * Records

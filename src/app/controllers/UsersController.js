@@ -10,7 +10,7 @@ import { uploadToS3 } from '../libs/aws';
 
 export const index = async (req, res) => {
     try {
-        const users = await Users.find({}).limit(15);
+        const users = await Users.find({});
         res.send(users);
     } catch (e) {
         errorHandler(res, e);
@@ -83,7 +83,7 @@ export const register = async (req, res) => {
 export const search = async (req, res) => {
     const searchValue = req.body.name;
     let users = [];
-    const notFriends = [];
+    let notFriends = [];
 
     if (searchValue) {
         const authUserInfo = getUserInfoByToken(req.headers['app-token']);
@@ -105,6 +105,8 @@ export const search = async (req, res) => {
                     notFriends.push(users[i])
                 }
             }
+        } else {
+            notFriends = users;
         }
     }
 
