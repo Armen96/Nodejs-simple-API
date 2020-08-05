@@ -16,7 +16,7 @@
     "cors": "^2.8.5",
     "eslint-plugin-node": "^11.0.0",
     "express": "^4.17.1",
-    "express-fileupload": "^1.1.7-alpha.1",
+    "express-fileupload": "^1.1.9",
     "expressjs": "^1.0.1",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
