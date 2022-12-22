@@ -18,7 +18,7 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.1.7-alpha.1",
     "expressjs": "^1.0.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.15",
     "mocha": "^7.1.2",
     "moment": "^2.24.0",
